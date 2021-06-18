@@ -3,7 +3,7 @@ const imgUrl = "https://dog.ceo/api/breeds/image/random/4"
 const breedUrl = 'https://dog.ceo/api/breeds/list/all' 
 const breedUl = document.getElementById('dog-breeds')
 const breedDropDown = document.getElementById('breed-dropdown')
-
+let breedsArr
 
 fetchDogs()
 fetchBreeds()
@@ -40,12 +40,12 @@ function dogBreeds(breedsArr) {
     breedLi.textContent = breed
     breedLi.style.cursor = 'pointer'
     breedUl.append(breedLi) 
-
-breedLi.addEventListener('click', (e) => {
-  let value = e.target
-  value.style.color  = 'purple'
-  value.style.textDecoration = 'underline'
-  value.style.fontWeight = 'bolder'
+    
+  breedLi.addEventListener('click', (e) => {
+  let dogList = e.target
+  dogList.style.color  = 'purple'
+  dogList.style.textDecoration = 'underline'
+  dogList.style.fontWeight = 'bolder'
 
     })
   }) 
@@ -53,12 +53,21 @@ breedLi.addEventListener('click', (e) => {
 
 breedDropDown.addEventListener('change', handleChange)
 
+
 function handleChange(e) {
-  const letter = e.target.value
-  const filteredBreeds = breedsArr.filter(breed => breed.startsWith(letter))
-  // cosole.log(breedsArr.filter(breed => breed.startsWith(letter)))
-  dogBreeds(filteredBreeds)
+  let letter = e.target.value
+  let filteredBreeds = breedsArr.filter(breed => breed.startsWith(letter))
+  breedUl.innerHTML = newDogList(filteredBreeds)
 }
+
+function newDogList(breedsArr) {
+  let dogLiArr = breedsArr.map(breed => {
+    return `<li>${breed}</li>` 
+  })
+  return dogLiArr.join('')
+}
+
+
 
 
 }) //<======== End of DOMContentLoaded
