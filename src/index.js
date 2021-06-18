@@ -1,18 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
 const imgUrl = "https://dog.ceo/api/breeds/image/random/4" 
 const breedUrl = 'https://dog.ceo/api/breeds/list/all' 
+const breedUl = document.getElementById('dog-breeds')
+const breedDropDown = document.getElementById('breed-dropdown')
+
 
 fetchDogs()
 fetchBreeds()
 
-// Fetches the dogs
+
 function fetchDogs() {
   fetch(imgUrl)
   .then(res => res.json())
   .then(data => dogImg(data.message))
 }
 
-// Takes the data from dogs and irrerates over it and makes elements
 function dogImg(dogs) {
   dogs.forEach(dog => {
     const divDog = document.querySelector('div')
@@ -27,37 +29,36 @@ function fetchBreeds() {
   fetch(breedUrl)
   .then(res => res.json())
   .then(data => {
-    let breeds = Object.keys(data.message)
-    dogBreeds(breeds)
+    breedsArr = Object.keys(data.message)
+    dogBreeds(breedsArr)
   })
 }
 
 function dogBreeds(breedsArr) {
-  const breedUl = document.getElementById('dog-breeds')
   breedsArr.forEach(breed => {
     let breedLi = document.createElement('li')
     breedLi.textContent = breed
     breedLi.style.cursor = 'pointer'
     breedUl.append(breedLi) 
 
-    breedLi.addEventListener('click', (e) => {
-      let value = e.target
-      value.style.color  = 'purple'
-      value.style.textDecoration = 'underline'
-      value.style.fontWeight = 'bolder'
+breedLi.addEventListener('click', (e) => {
+  let value = e.target
+  value.style.color  = 'purple'
+  value.style.textDecoration = 'underline'
+  value.style.fontWeight = 'bolder'
+
     })
-  })
-  const breedDropDown = document.getElementById('breed-dropdown')
-  breedDropDown.addEventListener('change', (e) => {
-    
-    console.log(e.path)
-    
-    
-    
-  })
+  }) 
+}
+
+breedDropDown.addEventListener('change', handleChange)
+
+function handleChange(e) {
+  const letter = e.target.value
+  const filteredBreeds = breedsArr.filter(breed => breed.startsWith(letter))
+  // cosole.log(breedsArr.filter(breed => breed.startsWith(letter)))
+  dogBreeds(filteredBreeds)
+}
 
 
-
-
-  }
-})
+}) //<======== End of DOMContentLoaded
